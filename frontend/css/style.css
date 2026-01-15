@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #141414;
+  color: white;
+}
+
+/* HEADER */
+header {
+  display: flex;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: black;
+}
+
+.logo {
+  color: red;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* ROW TITLE */
+.row-title {
+  margin: 30px 40px 10px;
+  font-size: 20px;
+}
+
+/* VIDEO ROW */
+.row {
+  display: flex;
+  overflow-x: auto;
+  padding: 0 40px 20px;
+}
+
+.row::-webkit-scrollbar {
+  display: none;
+}
+
+/* VIDEO CARD */
+.card {
+  min-width: 200px;
+  height: 120px;
+  background: #333;
+  margin-right: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.card span {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  font-size: 12px;
+}
