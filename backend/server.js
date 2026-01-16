@@ -1,20 +1,20 @@
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
+
+const videoRoutes = require("./routes/videos");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const authRoutes = require("./routes/auth");
-const videoRoutes = require("./routes/videos");
+// Routes
+app.use("/api", videoRoutes);
 
-app.use("/api/auth", authRoutes);
-app.use("/api/videos", videoRoutes);
-
+// Health check
 app.get("/", (req, res) => {
-  res.send("🐦 Sparrow Stream Backend Running");
+  res.send("Sparrow Stream Backend Running");
 });
 
 const PORT = process.env.PORT || 5000;

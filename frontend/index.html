@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sparrow Stream</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <h1>Sparrow Stream</h1>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <h2 class="section-title">Trending</h2>
+    <div id="videoGrid" class="video-grid">
+      <!-- Videos load here -->
+    </div>
+  </main>
+
+  <!-- VIDEO PLAYER MODAL -->
+  <div id="playerModal" class="modal">
+    <span class="close" onclick="closePlayer()">×</span>
+    <video id="videoPlayer" controls autoplay></video>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
