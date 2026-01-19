@@ -1,38 +1,47 @@
 const API_BASE = "https://sparrow-streamm-backend.onrender.com";
 
-const videoGrid = document.getElementById("videoGrid");
-const modal = document.getElementById("playerModal");
-const player = document.getElementById("videoPlayer");
+const player = videojs("main-player");
 
-// Load videos
-fetch(`${API_BASE}/api/videos`)
+function loadVideo(video) {
+  player.src({
+    src: `${API_BASE}/api/stream/${video.id}`,
+    type: "video/mp4",
+  });
+
+  document.getElementById("video-title").innerText = video.name;
+  document.getElementById("video-desc").innerText = video.description || "No description";
+  player.play();
+}
+
+fetch(`${API_BASE}/api/videos/list`)
   .then(res => res.json())
   .then(videos => {
-    videos.forEach(video => {
+    const playlist = document.getElementById("playlist");
+
+    // Load first video by default
+    loadVideo(videos[0]);
+
+    videos.forEach((video) => {
       const card = document.createElement("div");
-      card.className = "video-card";
+      card.classList.add("playlist-card");
 
-      card.innerHTML = `
-        <img src="https://via.placeholder.com/300x170?text=Video" />
-        <p>${video.name}</p>
-      `;
+      // Auto thumbnail from Drive
+      const thumb = document.createElement("img");
+      thumb.src = video.thumbnailLink;   // <-- Auto thumbnail
+      thumb.classList.add("thumb");
 
-      card.onclick = () => playVideo(video.id);
+      const title = document.createElement("div");
+      title.innerText = video.name;
+      title.classList.add("thumb-title");
 
-      videoGrid.appendChild(card);
+      card.appendChild(thumb);
+      card.appendChild(title);
+
+      card.addEventListener("click", () => {
+        loadVideo(video);
+      });
+
+      playlist.appendChild(card);
     });
   })
   .catch(err => console.error(err));
-
-// Play video
-function playVideo(id) {
-  player.src = `${API_BASE}/api/stream/${id}`;
-  modal.style.display = "block";
-}
-
-// Close player
-function closePlayer() {
-  player.pause();
-  player.src = "";
-  modal.style.display = "none";
-}
