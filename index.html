@@ -2,17 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sparrow Stream</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🎬 Sparrow Stream</h1>
+<div class="stars"></div>
 
-<video id="player" controls></video>
+<nav>
+  <div class="logo">🎬 SPARROW STREAM</div>
 
-<div id="playlist"></div>
+  <div class="search-container">
+    <span class="search-icon">🔍</span>
+    <input
+      type="text"
+      class="search-bar"
+      id="searchBar"
+      placeholder="Search movies and shows..."
+    >
+  </div>
+</nav>
+
+<main>
+  <div class="video-section">
+    <div class="video-container">
+      <video id="player" controls></video>
+    </div>
+  </div>
+
+  <div class="playlist-section">
+    <h2 class="section-title">Explore the Galaxy</h2>
+    <div id="playlist"></div>
+  </div>
+</main>
 
 <script src="script.js"></script>
+
+<script>
+  const searchBar = document.getElementById('searchBar');
+  const playlist = document.getElementById('playlist');
+
+  searchBar.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const cards = playlist.querySelectorAll('.card');
+
+    cards.forEach(card => {
+      const title = card.querySelector('p').textContent.toLowerCase();
+      card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+    });
+  });
+</script>
+
 </body>
 </html>

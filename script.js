@@ -1,36 +1,53 @@
-const API_BASE = "https://sparrow-streamm-backend.onrender.com";
+const API_BASE = "https://YOUR_RENDER_BACKEND_URL/api";
 
-const player = document.getElementById("player");
 const playlist = document.getElementById("playlist");
+const searchBar = document.getElementById("searchBar");
+const player = document.getElementById("player");
 
-fetch(`${API_BASE}/api/videos/list`)
-  .then(res => res.json())
-  .then(videos => {
-    if (!videos.length) return;
+/* =========================
+   LOAD VIDEOS FROM BACKEND
+========================= */
+async function loadVideos() {
+  const res = await fetch(`${API_BASE}/videos`);
+  const videos = await res.json();
 
-    loadVideo(videos[0]);
+  playlist.innerHTML = "";
 
-    videos.forEach(video => {
-      const card = document.createElement("div");
-      card.className = "card";
+  videos.forEach(video => {
+    const card = document.createElement("div");
+    card.className = "card";
 
-      const img = document.createElement("img");
-      img.src = video.thumbnailLink;
+    card.innerHTML = `
+      <img src="${video.thumbnailLink || 'fallback.jpg'}">
+      <p class="video-title">${video.name}</p>
+    `;
 
-      const title = document.createElement("p");
-      title.innerText = video.name;
+    card.onclick = () => {
+      player.src = `${API_BASE}/stream/${video.id}`;
+      player.play();
+    };
 
-      card.appendChild(img);
-      card.appendChild(title);
-
-      card.onclick = () => loadVideo(video);
-
-      playlist.appendChild(card);
-    });
+    playlist.appendChild(card);
   });
-
-function loadVideo(video) {
-  player.src = `${API_BASE}/api/stream/${video.id}`;
-  player.load();
-  player.play();
 }
+
+loadVideos();
+
+/* =========================
+   SEARCH (FIXED)
+========================= */
+searchBar.addEventListener("input", () => {
+  const term = searchBar.value.toLowerCase();
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    const title = card
+      .querySelector(".video-title")
+      .innerText
+      .toLowerCase();
+
+    card.style.display = title.includes(term)
+      ? "block"
+      : "none";
+  });
+});

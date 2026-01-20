@@ -1,33 +1,201 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@keyframes stars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-2000px); }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.5),
+                0 0 40px rgba(75, 0, 130, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.8),
+                0 0 60px rgba(75, 0, 130, 0.5);
+  }
+}
+
 body {
-  background: #111;
-  color: white;
-  font-family: Arial;
-  text-align: center;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Starfield */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  z-index: 0;
+}
+
+.stars::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 60px 70px, #fff, transparent),
+    radial-gradient(1px 1px at 50px 50px, #ddd, transparent),
+    radial-gradient(1px 1px at 130px 80px, #fff, transparent),
+    radial-gradient(2px 2px at 90px 10px, #eee, transparent);
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  animation: stars 100s linear infinite;
+  opacity: 0.5;
+}
+
+/* Navbar */
+nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  background: rgba(9, 10, 15, 0.85);
+  backdrop-filter: blur(20px);
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+}
+
+/* Search */
+.search-container {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 40px;
+  position: relative;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  border-radius: 25px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.search-bar:focus {
+  outline: none;
+  border-color: rgba(138, 43, 226, 0.6);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+}
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+/* Main */
+main {
+  position: relative;
+  z-index: 1;
+  padding-top: 80px;
+}
+
+/* Video */
+.video-section {
+  padding: 40px 50px;
+  max-width: 1600px;
+  margin: auto;
+}
+
+.video-container {
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 50px rgba(138, 43, 226, 0.4);
 }
 
 video {
-  width: 80%;
-  max-height: 450px;
-  margin-bottom: 20px;
+  width: 100%;
+  max-height: 700px;
+}
+
+/* Playlist */
+.playlist-section {
+  padding: 40px 50px;
+  max-width: 1600px;
+  margin: auto;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 #playlist {
-  display: flex;
-  gap: 15px;
-  overflow-x: auto;
-  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
 }
 
+/* Cards */
 .card {
-  width: 200px;
   cursor: pointer;
+  transition: 0.4s;
+}
+
+.card-inner {
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(138,43,226,0.2);
+}
+
+.card:hover .card-inner {
+  border-color: rgba(138,43,226,0.8);
+  animation: glow 2s infinite;
 }
 
 .card img {
   width: 100%;
-  border-radius: 10px;
+  aspect-ratio: 16/9;
+  object-fit: cover;
 }
 
 .card p {
-  font-size: 14px;
+  padding: 12px;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav {
+    padding: 15px 20px;
+    flex-wrap: wrap;
+  }
+
+  .search-container {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
