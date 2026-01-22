@@ -1,4 +1,4 @@
-const API_BASE = "https://YOUR_RENDER_BACKEND_URL/api";
+const API_BASE = "https://sparrow-streamm-backend.onrender.com";
 
 const playlist = document.getElementById("playlist");
 const searchBar = document.getElementById("searchBar");
