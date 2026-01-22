@@ -1,0 +1,14 @@
+{
+  "name": "sparrow-stream-backend",
+  "version": "1.0.0",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "googleapis": "^144.0.0",
+    "dotenv": "^16.4.5"
+  }
+}
