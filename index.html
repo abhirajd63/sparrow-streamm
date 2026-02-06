@@ -27,11 +27,21 @@
 </nav>
 
 <main>
-  <div class="video-section">
-    <div class="video-container">
-      <video id="player" controls></video>
-    </div>
+  <div class="video-container">
+  <video id="player" controls preload="metadata"></video>
+
+  <div class="vlc-controls">
+    <button onclick="seek(-10)">⏪ 10s</button>
+    <button onclick="seek(10)">⏩ 10s</button>
+
+    <select id="audioSelect"></select>
+
+    <select id="subtitleSelect">
+      <option value="off">Subtitles OFF</option>
+    </select>
   </div>
+</div>
+
 
   <div class="playlist-section">
     <h2 class="section-title">Explore the Galaxy</h2>
