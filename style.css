@@ -154,14 +154,15 @@ video {
 
 #playlist {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
 }
 
 /* Cards */
 .card {
   cursor: pointer;
   transition: 0.4s;
+  text-align: center;
 }
 
 .card-inner {
@@ -178,13 +179,14 @@ video {
 
 .card img {
   width: 100%;
-  aspect-ratio: 16/9;
-  object-fit: cover;
+  border-radius: 8px;
 }
 
 .card p {
   padding: 12px;
   text-align: center;
+  font-size: 14px;
+  margin-top: 6px;
 }
 
 /* Responsive */
