@@ -1,19 +1,21 @@
 console.log("JS loaded");
 
-const API_BASE = "https://sparrow-streamm-backend.onrender.com";
-
 const playlist = document.getElementById("playlist");
 const player = document.getElementById("player");
 
-// 🔹 Load videos on page load
-async function loadVideos() {
-  try {
-    const res = await fetch(`${API_BASE}/api/videos`);
-    const videos = await res.json();
+fetch("https://sparrow-streamm-backend.onrender.com/api/videos")
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("API error");
+    }
+    return res.json();
+  })
+  .then(videos => {
+    console.log("VIDEOS:", videos);
 
     playlist.innerHTML = "";
 
-    videos.forEach((video) => {
+    videos.forEach(video => {
       const card = document.createElement("div");
       card.className = "card";
 
@@ -22,20 +24,15 @@ async function loadVideos() {
         <p>${video.name}</p>
       `;
 
-      card.onclick = () => playVideo(video.id);
+      card.onclick = () => {
+        player.src = `https://sparrow-streamm-backend.onrender.com/api/stream/${video.id}`;
+        player.play();
+      };
 
       playlist.appendChild(card);
     });
-  } catch (err) {
+  })
+  .catch(err => {
     console.error("FETCH ERROR:", err);
-  }
-}
-
-// 🔹 Play selected video
-function playVideo(videoId) {
-  player.src = `${API_BASE}/api/stream/${videoId}`;
-  player.play();
-}
-
-// 🚀 Init
-loadVideos();
+    playlist.innerHTML = "<p style='color:red'>Failed to load videos</p>";
+  });
