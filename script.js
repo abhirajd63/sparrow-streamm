@@ -42,14 +42,8 @@ function playVideo(id) {
    SKIP FUNCTION (VLC STYLE)
 ========================== */
 function seek(seconds) {
-  if (!player.duration) return;
-
-  let newTime = player.currentTime + seconds;
-
-  if (newTime < 0) newTime = 0;
-  if (newTime > player.duration) newTime = player.duration;
-
-  player.currentTime = newTime;
+  const video = document.getElementById("player");
+  video.currentTime += seconds;
 }
 
 /* ==========================
