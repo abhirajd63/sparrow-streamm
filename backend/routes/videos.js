@@ -1,10 +1,26 @@
 const express = require("express");
+const drive = require("../google/drive");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  res.json([
-    { id: "123", name: "Test Video.mp4" }
-  ]);
+  try {
+    const folderId = process.env.DRIVE_FOLDER_ID;
+
+    const response = await drive.files.list({
+      q: `'${folderId}' in parents and trashed=false`,
+      fields: "files(id, name, mimeType)",
+    });
+
+    const videos = response.data.files.filter(file =>
+      file.mimeType.startsWith("video/")
+    );
+
+    res.json(videos);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
 });
 
 module.exports = router;

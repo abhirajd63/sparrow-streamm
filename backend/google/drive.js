@@ -7,6 +7,9 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/drive.readonly"],
 });
 
-const drive = google.drive({ version: "v3", auth });
+const drive = google.drive({
+  version: "v3",
+  auth,
+});
 
 module.exports = drive;
