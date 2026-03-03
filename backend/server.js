@@ -9,13 +9,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use("/api/videos", videoRoutes);
 app.use("/api/stream", streamRoutes);
 
-// Root route (optional but useful)
 app.get("/", (req, res) => {
-  res.send("Sparrow Stream Backend Running 🚀");
+  res.send("Backend running 🚀");
 });
 
 const PORT = process.env.PORT || 5000;

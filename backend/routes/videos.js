@@ -2,7 +2,6 @@ const express = require("express");
 const drive = require("../google/drive");
 const router = express.Router();
 
-// GET: /api/videos
 router.get("/", async (req, res) => {
   try {
     const folderId = process.env.DRIVE_FOLDER_ID;
@@ -12,7 +11,6 @@ router.get("/", async (req, res) => {
       fields: "files(id, name, mimeType)",
     });
 
-    // Optional: filter only videos
     const videos = response.data.files.filter(file =>
       file.mimeType.startsWith("video/")
     );
@@ -20,7 +18,7 @@ router.get("/", async (req, res) => {
     res.json(videos);
 
   } catch (error) {
-    console.error("Error fetching videos:", error);
+    console.error(error);
     res.status(500).json({ error: "Failed to fetch videos" });
   }
 });
