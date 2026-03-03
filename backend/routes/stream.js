@@ -3,47 +3,56 @@ const drive = require("../google/drive");
 const router = express.Router();
 
 router.get("/:id", async (req, res) => {
-  const fileId = req.params.id;
-  const range = req.headers.range;
-
-  if (!range) {
-    return res.status(400).send("Range header required");
-  }
-
   try {
-    // Get file size
-    const meta = await drive.files.get({
+    const fileId = req.params.id;
+
+    const fileMeta = await drive.files.get({
       fileId,
-      fields: "size,mimeType",
+      fields: "size, name, mimeType",
     });
 
-    const fileSize = Number(meta.data.size);
-    const mimeType = meta.data.mimeType;
+    const fileSize = parseInt(fileMeta.data.size, 10);
+    const range = req.headers.range;
 
-    const CHUNK_SIZE = 10 ** 6; // 1MB
-    const start = Number(range.replace(/\D/g, ""));
-    const end = Math.min(start + CHUNK_SIZE, fileSize - 1);
+    if (!range) {
+      return res.status(400).send("Requires Range header");
+    }
 
-    const contentLength = end - start + 1;
+    const parts = range.replace(/bytes=/, "").split("-");
+    const start = parseInt(parts[0], 10);
+    const end = parts[1]
+      ? parseInt(parts[1], 10)
+      : fileSize - 1;
 
-    res.writeHead(206, {
-      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-      "Accept-Ranges": "bytes",
-      "Content-Length": contentLength,
-      "Content-Type": mimeType,
-    });
+    const chunkSize = end - start + 1;
 
-    const driveStream = await drive.files.get(
-      { fileId, alt: "media" },
-      { responseType: "stream", headers: { Range: `bytes=${start}-${end}` } }
+    const response = await drive.files.get(
+      {
+        fileId,
+        alt: "media",
+      },
+      {
+        responseType: "stream",
+        headers: {
+          Range: `bytes=${start}-${end}`,
+        },
+      }
     );
 
-    driveStream.data.pipe(res);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Streaming error");
+    res.status(206);
+    res.set({
+      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": chunkSize,
+      "Content-Type": fileMeta.data.mimeType,
+    });
+
+    response.data.pipe(res);
+
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
   }
 });
 
 module.exports = router;
- 
